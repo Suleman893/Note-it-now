@@ -8,9 +8,18 @@ import {
   Container,
 } from "react-bootstrap";
 import {Link, useNavigate} from "react-router-dom";
-
+import {useSelector, useDispatch} from "react-redux";
+import {logout} from "../../redux/actions/userActions";
 const Header = () => {
+  const userLogin = useSelector((state) => state.userLogin);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const {userInfo} = userLogin;
+  const logoutHandler = () => {
+    dispatch(logout());
+    navigate("/");
+  };
   return (
     <Navbar bg="light" expand="lg">
       <Container>
@@ -30,12 +39,7 @@ const Header = () => {
             <NavDropdown title="Username" id="navbarScrollingDropdown">
               <NavDropdown.Item href="#action3">My Profile</NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item
-                onClick={() => {
-                  localStorage.removeItem("userInfo");
-                  navigate("/");
-                }}
-              >
+              <NavDropdown.Item onClick={logoutHandler}>
                 Logout
               </NavDropdown.Item>
             </NavDropdown>

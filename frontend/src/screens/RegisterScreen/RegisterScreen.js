@@ -1,51 +1,35 @@
-import React, {useState} from "react";
-import {Link} from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import {Link, useNavigate} from "react-router-dom";
 import MainScreen from "../../components/MainScreen";
 import {Form, Button, Row, Col} from "react-bootstrap";
-import axios from "axios";
 import Loading from "../../components/Loading";
 import ErrorMessage from "../../components/ErrorMessage";
 import "./RegisterScreen.css";
+import {useDispatch, useSelector} from "react-redux";
+import {register} from "../../redux/actions/userActions";
 const RegisterScreen = () => {
+  const dispatch = useDispatch();
+  const userRegister = useSelector((state) => state.userRegister);
+  const {loading, error, userInfo} = userRegister;
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (userInfo) {
+      navigate("/mynote");
+    }
+  }, [userInfo]);
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState(null);
-  const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(false);
-
   const submitHandler = async (e) => {
     e.preventDefault();
 
     if (password !== confirmPassword) {
-      setMessage("Password & Confirm Password dont match");
+      setMessage("Password dont match");
     } else {
-      setMessage(null);
-
-      try {
-        const config = {
-          headers: {
-            "Content-type": "application/json",
-          },
-        };
-
-        setLoading(true);
-        const {data} = await axios.post(
-          "/api/users/register",
-          {
-            name,
-            email,
-            password,
-          },
-          config
-        );
-        localStorage.setItem("userInfo", JSON.stringify(data));
-        setLoading(false);
-      } catch (error) {
-        setError(error.response.data.message);
-        setLoading(false);
-      }
+      dispatch(register(name, email, password));
     }
   };
 
