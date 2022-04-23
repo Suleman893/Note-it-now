@@ -1,18 +1,20 @@
+import React, {useEffect} from "react";
 import {
-  Button,
   Form,
   FormControl,
   Nav,
   Navbar,
   NavDropdown,
   Container,
+  Button,
 } from "react-bootstrap";
 import {Link, useNavigate} from "react-router-dom";
 import {useSelector, useDispatch} from "react-redux";
 import {logout} from "../../redux/actions/userActions";
-const Header = () => {
-  const userLogin = useSelector((state) => state.userLogin);
+const Header = ({setSearch}) => {
   const dispatch = useDispatch();
+
+  const userLogin = useSelector((state) => state.userLogin);
   const navigate = useNavigate();
 
   const {userInfo} = userLogin;
@@ -20,8 +22,12 @@ const Header = () => {
     dispatch(logout());
     navigate("/");
   };
+
+  useEffect(() => {
+    navigate("/");
+  }, [userInfo]);
   return (
-    <Navbar bg="light" expand="lg">
+    <Navbar collapseOnSelect bg="light" expand="lg">
       <Container>
         <Navbar.Brand>
           <Link to="/">Note now</Link>
