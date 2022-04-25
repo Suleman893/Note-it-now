@@ -1,29 +1,30 @@
 import React, {useEffect, useState} from "react";
-import {Link, useNavigate} from "react-router-dom";
-import MainScreen from "../../components/MainScreen";
 import {Form, Button, Row, Col} from "react-bootstrap";
 import {useDispatch, useSelector} from "react-redux";
-import "./LoginScreen.css";
+import {Link, useNavigate} from "react-router-dom";
 import Loading from "../../components/Loading";
 import ErrorMessage from "../../components/ErrorMessage";
 import {login} from "../../redux/actions/userActions";
+import MainScreen from "../../components/MainScreen";
+import "./LoginScreen.css";
+
 const LoginScreen = () => {
   const navigate = useNavigate();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   const userLogin = useSelector((state) => state.userLogin);
   const {loading, error, userInfo} = userLogin;
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
   useEffect(() => {
-    if (!userInfo) {
-      navigate("/");
+    if (userInfo) {
+      navigate("/mynotes");
     }
   }, [userInfo]);
+
   const submitHandler = async (e) => {
     e.preventDefault();
-
     dispatch(login(email, password));
   };
   return (

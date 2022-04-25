@@ -1,15 +1,18 @@
+import {useEffect} from "react";
 import {Container, Row, Button} from "react-bootstrap";
 import "./LandingPage.css";
-import {useEffect} from "react";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, Link} from "react-router-dom";
+import {useSelector} from "react-redux";
 const LandingPage = () => {
+  const userLogin = useSelector((state) => state.userLogin);
+  const {userInfo} = userLogin;
   const navigate = useNavigate();
-  // useEffect(() => {
-  //   const userInfo = localStorage.getItem("userInfo");
-  //   if (userInfo) {
-  //     navigate("/mynotes");
-  //   }
-  // }, [userInfo]);
+
+  useEffect(() => {
+    if (userInfo) {
+      navigate("/mynotes");
+    }
+  }, [userInfo]);
 
   return (
     <div className="main">
@@ -20,15 +23,13 @@ const LandingPage = () => {
               <h1 className="title">Welcome </h1>
               <p className="subtitle"> Note it now </p>
             </div>
-
             <div className="buttonContainer">
-              <a href="/login">
+              <Link to="/login">
                 <Button className="landingbutton">Login</Button>
-              </a>
-
-              <a href="/register">
+              </Link>
+              <Link to="/register">
                 <Button className="landingbutton">Register</Button>
-              </a>
+              </Link>
             </div>
           </div>
         </Row>

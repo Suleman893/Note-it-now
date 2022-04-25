@@ -25,11 +25,11 @@ export const listNotes = () => async (dispatch, getState) => {
 
     const config = {
       headers: {
-        Authroization: `Bearer ${userInfo.token}`,
+        Authorization: `Bearer ${userInfo.token}`,
       },
     };
 
-    const {data} = await axios.get(`/api/notes`, config);
+    const {data} = await axios.get(`/api/notes/allNotes`, config);
     dispatch({
       type: NOTES_LIST_SUCCESS,
       payload: data,
