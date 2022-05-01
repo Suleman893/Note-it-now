@@ -1,28 +1,32 @@
 import React, {useEffect, useState} from "react";
-import {Link, useNavigate} from "react-router-dom";
-import MainScreen from "../../components/MainScreen";
 import {Form, Button, Row, Col} from "react-bootstrap";
+import {useDispatch, useSelector} from "react-redux";
+import {Link} from "react-router-dom";
 import Loading from "../../components/Loading";
 import ErrorMessage from "../../components/ErrorMessage";
-import "./RegisterScreen.css";
-import {useDispatch, useSelector} from "react-redux";
 import {register} from "../../redux/actions/userActions";
-const RegisterScreen = () => {
-  const dispatch = useDispatch();
-  const userRegister = useSelector((state) => state.userRegister);
-  const {loading, error, userInfo} = userRegister;
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (userInfo) {
-      navigate("/mynote");
-    }
-  }, [userInfo]);
+import MainScreen from "../../components/MainScreen";
+import "./RegisterScreen.css";
+
+const RegisterScreen = ({history}) => {
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState(null);
+
+  const dispatch = useDispatch();
+  const userRegister = useSelector((state) => state.userRegister);
+  const {loading, error, userInfo} = userRegister;
+  
+  useEffect(() => {
+    if (userInfo) {
+      history.push("/");
+    }
+  }, [history,userInfo]);
+
+  
   const submitHandler = async (e) => {
     e.preventDefault();
 

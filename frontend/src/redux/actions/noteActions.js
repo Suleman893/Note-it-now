@@ -1,16 +1,16 @@
 import {
+  NOTES_CREATE_FAIL,
+  NOTES_CREATE_REQUEST,
+  NOTES_CREATE_SUCCESS,
+  NOTES_DELETE_FAIL,
+  NOTES_DELETE_REQUEST,
+  NOTES_DELETE_SUCCESS,
+  NOTES_LIST_FAIL,
   NOTES_LIST_REQUEST,
   NOTES_LIST_SUCCESS,
-  NOTES_LIST_FAIL,
-  NOTE_CREATE_REQUEST,
-  NOTE_CREATE_SUCCESS,
-  NOTE_CREATE_FAIL,
-  NOTE_UPDATE_REQUEST,
-  NOTE_UPDATE_SUCCESS,
-  NOTE_UPDATE_FAIL,
-  NOTE_DELETE_REQUEST,
-  NOTE_DELETE_SUCCESS,
-  NOTE_DELETE_FAIL,
+  NOTES_UPDATE_FAIL,
+  NOTES_UPDATE_REQUEST,
+  NOTES_UPDATE_SUCCESS,
 } from "../constants/noteConstants";
 
 import axios from "axios";
@@ -29,7 +29,8 @@ export const listNotes = () => async (dispatch, getState) => {
       },
     };
 
-    const {data} = await axios.get(`/api/notes/allNotes`, config);
+    const {data} = await axios.get(`/api/notes`, config);
+
     dispatch({
       type: NOTES_LIST_SUCCESS,
       payload: data,
@@ -50,7 +51,7 @@ export const createNoteAction =
   (title, content, category) => async (dispatch, getState) => {
     try {
       dispatch({
-        type: NOTE_CREATE_REQUEST,
+        type: NOTES_CREATE_REQUEST,
       });
 
       const {
@@ -70,14 +71,14 @@ export const createNoteAction =
         config
       );
 
-      dispatch({type: NOTE_CREATE_SUCCESS, payload: data});
+      dispatch({type: NOTES_CREATE_SUCCESS, payload: data});
     } catch (error) {
       const message =
         error.response && error.response.data.message
           ? error.response.data.message
           : error.message;
       dispatch({
-        type: NOTE_CREATE_FAIL,
+        type: NOTES_CREATE_FAIL,
         payload: message,
       });
     }
@@ -86,7 +87,7 @@ export const createNoteAction =
 export const deleteNoteAction = (id) => async (dispatch, getState) => {
   try {
     dispatch({
-      type: NOTE_DELETE_REQUEST,
+      type: NOTES_DELETE_REQUEST,
     });
 
     const {
@@ -98,11 +99,10 @@ export const deleteNoteAction = (id) => async (dispatch, getState) => {
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
-
     const {data} = await axios.delete(`/api/notes/${id}`, config);
 
     dispatch({
-      type: NOTE_DELETE_SUCCESS,
+      type: NOTES_DELETE_SUCCESS,
       payload: data,
     });
   } catch (error) {
@@ -111,7 +111,7 @@ export const deleteNoteAction = (id) => async (dispatch, getState) => {
         ? error.response.data.message
         : error.message;
     dispatch({
-      type: NOTE_DELETE_FAIL,
+      type: NOTES_DELETE_FAIL,
       payload: message,
     });
   }
@@ -121,7 +121,7 @@ export const updateNoteAction =
   (id, title, content, category) => async (dispatch, getState) => {
     try {
       dispatch({
-        type: NOTE_UPDATE_REQUEST,
+        type: NOTES_UPDATE_REQUEST,
       });
 
       const {
@@ -142,7 +142,7 @@ export const updateNoteAction =
       );
 
       dispatch({
-        type: NOTE_UPDATE_SUCCESS,
+        type: NOTES_UPDATE_SUCCESS,
         payload: data,
       });
     } catch (error) {
@@ -151,7 +151,7 @@ export const updateNoteAction =
           ? error.response.data.message
           : error.message;
       dispatch({
-        type: NOTE_UPDATE_FAIL,
+        type: NOTES_UPDATE_FAIL,
         payload: message,
       });
     }

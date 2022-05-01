@@ -1,18 +1,16 @@
-import {useEffect} from "react";
+import React, {useEffect} from "react";
 import {Button, Card, Badge, Accordion} from "react-bootstrap";
 import MainScreen from "../../components/MainScreen";
-import {Link, useNavigate} from "react-router-dom";
+import {Link} from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import {useDispatch, useSelector} from "react-redux";
 import {deleteNoteAction, listNotes} from "../../redux/actions/noteActions";
 import Loading from "../../components/Loading";
 import ErrorMessage from "../../components/ErrorMessage";
 
-const MyNotes = ({search}) => {
+const MyNotes = ({history, search}) => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const noteList = useSelector((state) => state.noteList);
-
   const {loading, error, notes} = noteList;
 
   const userLogin = useSelector((state) => state.userLogin);
@@ -33,9 +31,16 @@ const MyNotes = ({search}) => {
   useEffect(() => {
     dispatch(listNotes());
     if (!userInfo) {
-      navigate("/");
+      history.push("/");
     }
-  }, [dispatch, userInfo, successDelete, successCreate, successUpdate]);
+  }, [
+    dispatch,
+    history,
+    userInfo,
+    successDelete,
+    successCreate,
+    successUpdate,
+  ]);
 
   const deleteHandler = (id) => {
     if (window.confirm("Are you sure?")) {
@@ -86,7 +91,9 @@ const MyNotes = ({search}) => {
                   </span>
 
                   <div>
-                    <Button to={`/note/${note._id}`}>Edit</Button>
+                    <Link to={`/note/${note._id}`}>
+                      <Button>Edit</Button>
+                    </Link>
                     <Button
                       variant="danger"
                       className="mx-2"

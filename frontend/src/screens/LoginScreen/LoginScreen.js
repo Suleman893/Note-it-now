@@ -1,15 +1,14 @@
 import React, {useEffect, useState} from "react";
 import {Form, Button, Row, Col} from "react-bootstrap";
 import {useDispatch, useSelector} from "react-redux";
-import {Link, useNavigate} from "react-router-dom";
+import {Link} from "react-router-dom";
 import Loading from "../../components/Loading";
 import ErrorMessage from "../../components/ErrorMessage";
 import {login} from "../../redux/actions/userActions";
 import MainScreen from "../../components/MainScreen";
 import "./LoginScreen.css";
 
-const LoginScreen = () => {
-  const navigate = useNavigate();
+const LoginScreen = ({history}) => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -19,9 +18,10 @@ const LoginScreen = () => {
 
   useEffect(() => {
     if (userInfo) {
-      navigate("/mynotes");
+      history.push("/mynotes");
+
     }
-  }, [userInfo]);
+  }, [history,userInfo]);
 
   const submitHandler = async (e) => {
     e.preventDefault();

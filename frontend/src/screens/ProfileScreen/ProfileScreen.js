@@ -6,13 +6,14 @@ import {useDispatch, useSelector} from "react-redux";
 import {updateProfile} from "../../redux/actions/userActions";
 import Loading from "../../components/Loading";
 import ErrorMessage from "../../components/ErrorMessage";
-import {useNavigate} from "react-router-dom"
-const ProfileScreen = () => {
+
+const ProfileScreen = ({location, history}) => {
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-const navigate = useNavigate();
+
   const dispatch = useDispatch();
 
   const userLogin = useSelector((state) => state.userLogin);
@@ -23,12 +24,12 @@ const navigate = useNavigate();
 
   useEffect(() => {
     if (!userInfo) {
-      navigate("/");
+      history.push("/");
     } else {
       setName(userInfo.name);
       setEmail(userInfo.email);
     }
-  }, [userInfo]);
+  }, [history, userInfo]);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -49,7 +50,7 @@ const navigate = useNavigate();
                 </ErrorMessage>
               )}
               {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
-              <Form.Group controlId="name">
+              <Form.Group controlId="name" className="mt-4">
                 <Form.Label>Name</Form.Label>
                 <Form.Control
                   type="text"
@@ -58,7 +59,7 @@ const navigate = useNavigate();
                   onChange={(e) => setName(e.target.value)}
                 ></Form.Control>
               </Form.Group>
-              <Form.Group controlId="email">
+              <Form.Group controlId="email" className="mt-4">
                 <Form.Label>Email Address</Form.Label>
                 <Form.Control
                   type="email"
@@ -67,7 +68,7 @@ const navigate = useNavigate();
                   onChange={(e) => setEmail(e.target.value)}
                 ></Form.Control>
               </Form.Group>
-              <Form.Group controlId="password">
+              <Form.Group controlId="password" className="mt-4">
                 <Form.Label>Password</Form.Label>
                 <Form.Control
                   type="password"
@@ -76,7 +77,7 @@ const navigate = useNavigate();
                   onChange={(e) => setPassword(e.target.value)}
                 ></Form.Control>
               </Form.Group>
-              <Form.Group controlId="confirmPassword">
+              <Form.Group controlId="confirmPassword" className="mt-4">
                 <Form.Label>Confirm Password</Form.Label>
                 <Form.Control
                   type="password"
@@ -85,6 +86,7 @@ const navigate = useNavigate();
                   onChange={(e) => setConfirmPassword(e.target.value)}
                 ></Form.Control>
               </Form.Group>{" "}
+              <br />
               <Button type="submit" varient="primary">
                 Update
               </Button>

@@ -6,13 +6,12 @@ import {createNoteAction} from "../../redux/actions/noteActions";
 import Loading from "../../components/Loading";
 import ErrorMessage from "../../components/ErrorMessage";
 import ReactMarkdown from "react-markdown";
-import {useNavigate} from "react-router-dom";
 
-function CreateNote() {
+function CreateNote({history}) {
+  
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [category, setCategory] = useState("");
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const noteCreate = useSelector((state) => state.noteCreate);
   const {loading, error, note} = noteCreate;
@@ -30,19 +29,20 @@ function CreateNote() {
     if (!title || !content || !category) return;
 
     resetHandler();
-    navigate("/mynotes");
+    history.push("/mynotes");
   };
+
+  useEffect(() => {}, []);
 
   return (
     <>
-   
       <MainScreen title="Create a note">
         <Card>
           <Card.Header>Create a new note</Card.Header>
           <Card.Body>
             <Form onSubmit={submitHandler}>
               {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
-              <Form.Group controlId="title">
+              <Form.Group controlId="title" className="mt-4">
                 <Form.Label>Title</Form.Label>
                 <Form.Control
                   type="title"
@@ -52,7 +52,7 @@ function CreateNote() {
                 />
               </Form.Group>
 
-              <Form.Group controlId="content">
+              <Form.Group controlId="content" className="mt-4">
                 <Form.Label>Content</Form.Label>
                 <Form.Control
                   as="textarea"
@@ -63,7 +63,7 @@ function CreateNote() {
                 />
               </Form.Group>
               {content && (
-                <Card>
+                <Card className="mt-4">
                   <Card.Header>Note Preview</Card.Header>
                   <Card.Body>
                     <ReactMarkdown>{content}</ReactMarkdown>
@@ -71,7 +71,7 @@ function CreateNote() {
                 </Card>
               )}
 
-              <Form.Group controlId="content">
+              <Form.Group controlId="content" className="mt-4">
                 <Form.Label>Category</Form.Label>
                 <Form.Control
                   type="content"
@@ -81,6 +81,7 @@ function CreateNote() {
                 />
               </Form.Group>
               {loading && <Loading size={50} />}
+              <br />
               <Button type="submit" variant="primary">
                 Create Note
               </Button>

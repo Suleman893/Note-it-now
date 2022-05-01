@@ -1,18 +1,18 @@
-import {useEffect} from "react";
+import React, {useEffect} from "react";
 import {Container, Row, Button} from "react-bootstrap";
-import "./LandingPage.css";
-import {useNavigate, Link} from "react-router-dom";
 import {useSelector} from "react-redux";
-const LandingPage = () => {
+import {Link} from "react-router-dom";
+import "./LandingPage.css";
+
+const LandingPage = ({history}) => {
   const userLogin = useSelector((state) => state.userLogin);
   const {userInfo} = userLogin;
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (userInfo) {
-      navigate("/mynotes");
+      history.push("/mynotes");
     }
-  }, [userInfo]);
+  }, [history,userInfo]);
 
   return (
     <div className="main">

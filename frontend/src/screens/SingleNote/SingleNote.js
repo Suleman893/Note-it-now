@@ -10,15 +10,12 @@ import {
 import ErrorMessage from "../../components/ErrorMessage";
 import Loading from "../../components/Loading";
 import ReactMarkdown from "react-markdown";
-import {useNavigate, useParams} from "react-router-dom";
 
-function SingleNote() {
-  const navigate = useNavigate();
-  const match = useParams;
+function SingleNote({match, history}) {
+  
   const [title, setTitle] = useState();
   const [content, setContent] = useState();
   const [category, setCategory] = useState();
-
   const [date, setDate] = useState("");
 
   const dispatch = useDispatch();
@@ -33,7 +30,7 @@ function SingleNote() {
     if (window.confirm("Are you sure?")) {
       dispatch(deleteNoteAction(id));
     }
-    navigate("/mynotes");
+    history.push("/mynotes");
   };
 
   useEffect(() => {
@@ -61,8 +58,9 @@ function SingleNote() {
     if (!title || !content || !category) return;
 
     resetHandler();
-    navigate("/mynotes");
+    history.push("/mynotes");
   };
+
   return (
     <MainScreen title="Edit Note">
       <Card>
@@ -94,6 +92,8 @@ function SingleNote() {
                 onChange={(e) => setContent(e.target.value)}
               />
             </Form.Group>
+            <br />
+
             {content && (
               <Card>
                 <Card.Header>Note Preview</Card.Header>
@@ -112,6 +112,7 @@ function SingleNote() {
                 onChange={(e) => setCategory(e.target.value)}
               />
             </Form.Group>
+            <br />
             {loading && <Loading size={50} />}
             <Button variant="primary" type="submit">
               Update Note
@@ -133,4 +134,5 @@ function SingleNote() {
     </MainScreen>
   );
 }
+
 export default SingleNote;
